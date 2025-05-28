@@ -12,6 +12,7 @@ const PostReview = () => {
   const [year, setYear] = useState("");
   const [date, setDate] = useState("");
   const [carmodels, setCarmodels] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   let curr_url = window.location.href;
   let root_url = curr_url.substring(0,curr_url.indexOf("postreview"));
@@ -21,7 +22,21 @@ const PostReview = () => {
   let review_url = buildApiUrl(`/djangoapp/add_review`);
   let carmodels_url = buildApiUrl(`/djangoapp/get_cars`);
 
+  // Function to get CSRF token
+  const getCSRFToken = () => {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'csrftoken') {
+        return value;
+      }
+    }
+    return null;
+  };
+
   const postreview = async ()=>{
+    if (loading) return; // Prevent double submission
+    
     let name = sessionStorage.getItem("firstname")+" "+sessionStorage.getItem("lastname");
     //If the first and second name are stores as null, use the username
     if(name.includes("null")) {
@@ -31,6 +46,8 @@ const PostReview = () => {
       alert("All details are mandatory")
       return;
     }
+
+    setLoading(true);
 
     let model_split = model.split(" ");
     let make_chosen = model_split[0];
@@ -47,41 +64,83 @@ const PostReview = () => {
       "car_year": year,
     });
 
-    console.log(jsoninput);
-    const res = await fetch(review_url, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-      },
-      body: jsoninput,
-  });
-
-  const json = await res.json();
-  if (json.status === 200) {
-      window.location.href = window.location.origin+"/dealer/"+id;
-  }
-
-  }
-  const get_dealer = useCallback(async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
+    console.log("Posting review:", jsoninput);
     
-    if(res.ok && retobj.status === 200) {
-      // Our API returns a single dealer object, not an array
-      setDealer(retobj.dealer)
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      
+      // Add CSRF token if available
+      const csrfToken = getCSRFToken();
+      if (csrfToken) {
+        headers['X-CSRFToken'] = csrfToken;
+      }
+
+      const res = await fetch(review_url, {
+        method: "POST",
+        headers: headers,
+        credentials: 'include', // Include cookies for authentication
+        body: jsoninput,
+      });
+
+      console.log("Response status:", res.status);
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Error response:", errorText);
+        alert(`Error posting review: ${res.status} - ${errorText}`);
+        setLoading(false);
+        return;
+      }
+
+      const json = await res.json();
+      console.log("Response JSON:", json);
+      
+      if (json.status === 200) {
+        alert("Review posted successfully!");
+        window.location.href = window.location.origin+"/dealer/"+id;
+      } else {
+        alert(`Error: ${json.message || 'Failed to post review'}`);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Network error: Unable to post review. Please check your connection.");
+    } finally {
+      setLoading(false);
+    }
+  }
+  
+  const get_dealer = useCallback(async ()=>{
+    try {
+      const res = await fetch(dealer_url, {
+        method: "GET",
+        credentials: 'include'
+      });
+      const retobj = await res.json();
+      
+      if(res.ok && retobj.status === 200) {
+        // Our API returns a single dealer object, not an array
+        setDealer(retobj.dealer)
+      }
+    } catch (error) {
+      console.error("Error fetching dealer:", error);
     }
   }, [dealer_url]);
 
   const get_cars = useCallback(async ()=>{
-    const res = await fetch(carmodels_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    let carmodelsarr = Array.from(retobj.CarModels)
-    setCarmodels(carmodelsarr)
+    try {
+      const res = await fetch(carmodels_url, {
+        method: "GET",
+        credentials: 'include'
+      });
+      const retobj = await res.json();
+      
+      let carmodelsarr = Array.from(retobj.CarModels)
+      setCarmodels(carmodelsarr)
+    } catch (error) {
+      console.error("Error fetching cars:", error);
+    }
   }, [carmodels_url]);
 
   useEffect(() => {
@@ -112,7 +171,13 @@ const PostReview = () => {
       </div>
 
       <div>
-      <button className='postreview' onClick={postreview}>Post Review</button>
+      <button 
+        className='postreview' 
+        onClick={postreview}
+        disabled={loading}
+      >
+        {loading ? 'Posting...' : 'Post Review'}
+      </button>
       </div>
     </div>
   )
