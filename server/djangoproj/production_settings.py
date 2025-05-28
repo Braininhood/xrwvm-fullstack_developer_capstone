@@ -52,10 +52,14 @@ if RENDER_EXTERNAL_HOSTNAME:
 # Use PostgreSQL if DATABASE_URL is provided (Render), otherwise SQLite
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
-    }
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(DATABASE_URL)
+        }
+    except ImportError:
+        # dj_database_url not available in local development
+        pass
 
 # Security settings
 SECURE_BROWSER_XSS_FILTER = True
