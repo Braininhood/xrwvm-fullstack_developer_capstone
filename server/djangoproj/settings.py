@@ -30,7 +30,7 @@ DEBUG = True
 
 # Production and development hosts
 ALLOWED_HOSTS = [
-    'localhost', 
+    'localhost',
     '127.0.0.1',
     'xrwvm-fullstack-developer-capstone-fw81.onrender.com',
     '*.onrender.com',  # Allow all Render subdomains
