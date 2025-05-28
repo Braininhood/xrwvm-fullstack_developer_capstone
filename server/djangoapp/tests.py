@@ -214,4 +214,4 @@ class ModelValidationTestCase(TestCase):
                 # Should not raise validation error
                 car_model.full_clean()
                 car_model.save()
-                self.assertEqual(car_model.type, car_type) 
+                self.assertEqual(car_model.type, car_type)
