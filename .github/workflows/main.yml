@@ -252,7 +252,7 @@ jobs:
                         <a href="https://github.com/Braininhood/xrwvm-fullstack_developer_capstone" class="cta-button github-link">📱 View Source Code</a>
                     </div>
                     <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
-                        <em>Note: This is a static demo version. The full application with backend services runs locally with Docker.</em>
+                        <em>Note: This is a static demo version. The full application with backend services runs localy/your cloud (server) with Docker.</em>
                     </p>
                 </div>
 
@@ -308,76 +308,226 @@ jobs:
         EOF
         
         # Create app.html that loads the React application
-        cat > demo/app.html << 'EOF'
+        cat > demo/app.html << 'DEMO_EOF'
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="utf-8" />
-            <link rel="icon" href="./favicon.ico" />
             <meta name="viewport" content="width=device-width,initial-scale=1" />
             <meta name="theme-color" content="#000000" />
             <meta name="description" content="Full Stack Dealership Application Demo" />
-            <title>🚗 Dealership Application</title>
-            <script src="./static/js/demo-data.js"></script>
-            <link href="./static/css/main.css" rel="stylesheet">
+            <title>🚗 Dealership Application Demo</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { 
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: #f8f9fa; color: #333; line-height: 1.6;
+                }
+                .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; }
+                .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+                .nav { background: white; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                .nav-links { display: flex; gap: 20px; justify-content: center; }
+                .nav-link { padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s; }
+                .nav-link:hover { background: #5a6fd8; }
+                .nav-link.active { background: #28a745; }
+                .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+                .dealers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+                .dealer-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
+                .dealer-card:hover { transform: translateY(-5px); }
+                .dealer-name { font-size: 1.3rem; font-weight: bold; color: #667eea; margin-bottom: 10px; }
+                .dealer-info { color: #666; margin-bottom: 5px; }
+                .dealer-actions { margin-top: 15px; }
+                .btn { padding: 8px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px; transition: background 0.3s; }
+                .btn:hover { background: #218838; }
+                .btn-secondary { background: #6c757d; }
+                .btn-secondary:hover { background: #5a6268; }
+                .filter-section { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px; }
+                .reviews-section { background: white; padding: 20px; border-radius: 10px; margin-top: 20px; }
+                .review-card { border-left: 4px solid #667eea; padding: 15px; margin-bottom: 15px; background: #f8f9fa; }
+                .review-text { font-style: italic; margin-bottom: 10px; }
+                .review-author { font-weight: bold; color: #667eea; }
+                .sentiment { padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px; }
+                .sentiment.positive { background: #d4edda; color: #155724; }
+                .sentiment.negative { background: #f8d7da; color: #721c24; }
+                .sentiment.neutral { background: #d1ecf1; color: #0c5460; }
+                .hidden { display: none; }
+                .page-section { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                @media (max-width: 768px) {
+                    .nav-links { flex-direction: column; align-items: center; }
+                    .dealers-grid { grid-template-columns: 1fr; }
+                    .header h1 { font-size: 2rem; }
+                }
+            </style>
         </head>
         <body>
-            <noscript>You need to enable JavaScript to run this app.</noscript>
-            <div id="root"></div>
-            <script src="./static/js/main.js"></script>
+            <div class="header">
+                <h1>🚗 Dealership Application</h1>
+                <p>Interactive Demo - Full Stack Developer Capstone</p>
+            </div>
+            
+            <div class="nav">
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" onclick="showSection('dealers')">🏪 Browse Dealers</a>
+                    <a href="#" class="nav-link" onclick="showSection('reviews')">📝 Reviews</a>
+                    <a href="#" class="nav-link" onclick="showSection('about')">ℹ️ About</a>
+                    <a href="../" class="nav-link">🏠 Home</a>
+                </div>
+            </div>
+
+            <div class="container">
+                <div id="dealers-section" class="page-section">
+                    <h2>🏪 Browse Dealerships</h2>
+                    <div class="filter-section">
+                        <label for="state-filter">Filter by State:</label>
+                        <select id="state-filter" class="filter-select" onchange="filterDealers()">
+                            <option value="all">All States</option>
+                            <option value="Texas">Texas</option>
+                            <option value="New York">New York</option>
+                            <option value="California">California</option>
+                        </select>
+                        <span id="dealer-count">5 dealerships found</span>
+                    </div>
+                    <div id="dealers-grid" class="dealers-grid"></div>
+                </div>
+
+                <div id="reviews-section" class="page-section hidden">
+                    <h2>📝 Customer Reviews</h2>
+                    <p>Real customer feedback with AI-powered sentiment analysis</p>
+                    <div id="reviews-container" class="reviews-section"></div>
+                </div>
+
+                <div id="about-section" class="page-section hidden">
+                    <h2>ℹ️ About This Demo</h2>
+                    <p><strong>This is a static demo version of the full-stack dealership application.</strong></p>
+                    <br>
+                    <h3>🔧 Technologies Demonstrated:</h3>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Frontend:</strong> React, Bootstrap, Responsive Design</li>
+                        <li><strong>Backend:</strong> Django REST API, Node.js</li>
+                        <li><strong>Database:</strong> MongoDB, SQLite</li>
+                        <li><strong>AI/ML:</strong> NLTK Sentiment Analysis</li>
+                        <li><strong>DevOps:</strong> Docker, Kubernetes, CI/CD</li>
+                        <li><strong>Deployment:</strong> GitHub Actions, GitHub Pages</li>
+                    </ul>
+                    <h3>🚀 Full Application Features:</h3>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>User authentication and session management</li>
+                        <li>50+ real dealerships across multiple states</li>
+                        <li>Interactive review posting with sentiment analysis</li>
+                        <li>Car database with 15+ models from 5 manufacturers</li>
+                        <li>Admin panel for content management</li>
+                        <li>Microservices architecture</li>
+                        <li>Automated testing and deployment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <script src="demo-app.js"></script>
         </body>
         </html>
-        EOF
+        DEMO_EOF
         
-        # Modify the React build to work with demo data
-        echo "🔧 Configuring React app for demo mode..."
+        # Create separate JavaScript file to avoid YAML conflicts
+        cat > demo/demo-app.js << 'JS_EOF'
+        const dealers = [
+            {id: 1, full_name: "Luxury Motors Dallas", city: "Dallas", state: "Texas", address: "123 Main St", zip: "75201"},
+            {id: 2, full_name: "Premium Auto Houston", city: "Houston", state: "Texas", address: "456 Oak Ave", zip: "77001"},
+            {id: 3, full_name: "Elite Cars Austin", city: "Austin", state: "Texas", address: "789 Pine Rd", zip: "73301"},
+            {id: 4, full_name: "Metro Motors NYC", city: "New York", state: "New York", address: "321 Broadway", zip: "10001"},
+            {id: 5, full_name: "Golden Gate Auto", city: "San Francisco", state: "California", address: "654 Market St", zip: "94102"}
+        ];
+
+        const reviews = [
+            {id: 1, dealer_id: 1, name: "John Doe", review: "Excellent service and great cars!", sentiment: "positive", car_make: "Toyota", car_model: "Camry", car_year: 2023},
+            {id: 2, dealer_id: 1, name: "Jane Smith", review: "Good experience overall, but could improve on wait times.", sentiment: "neutral", car_make: "Honda", car_model: "Civic", car_year: 2022},
+            {id: 3, dealer_id: 2, name: "Mike Johnson", review: "Outstanding dealership! Best car buying experience ever.", sentiment: "positive", car_make: "BMW", car_model: "X5", car_year: 2023},
+            {id: 4, dealer_id: 3, name: "Sarah Wilson", review: "Terrible customer service and overpriced vehicles.", sentiment: "negative", car_make: "Ford", car_model: "F-150", car_year: 2022},
+            {id: 5, dealer_id: 4, name: "David Brown", review: "Professional staff and competitive prices. Highly recommended!", sentiment: "positive", car_make: "Mercedes", car_model: "C-Class", car_year: 2023}
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayDealers(dealers);
+            displayReviews(reviews);
+            console.log('🚗 Dealership Demo Application Loaded');
+        });
+
+        function showSection(section) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(section + '-section').classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        function displayDealers(dealersToShow) {
+            const grid = document.getElementById('dealers-grid');
+            grid.innerHTML = '';
+            dealersToShow.forEach(dealer => {
+                const dealerCard = document.createElement('div');
+                dealerCard.className = 'dealer-card';
+                dealerCard.innerHTML = `
+                    <div class="dealer-name">${dealer.full_name}</div>
+                    <div class="dealer-info">📍 ${dealer.city}, ${dealer.state}</div>
+                    <div class="dealer-info">🏠 ${dealer.address}</div>
+                    <div class="dealer-info">📮 ${dealer.zip}</div>
+                    <div class="dealer-actions">
+                        <a href="#" class="btn" onclick="viewDealerReviews(${dealer.id})">📝 View Reviews</a>
+                        <a href="#" class="btn btn-secondary" onclick="showDealerDetails(${dealer.id})">ℹ️ Details</a>
+                    </div>
+                `;
+                grid.appendChild(dealerCard);
+            });
+            document.getElementById('dealer-count').textContent = `${dealersToShow.length} dealerships found`;
+        }
+
+        function filterDealers() {
+            const selectedState = document.getElementById('state-filter').value;
+            let filteredDealers = dealers;
+            if (selectedState !== 'all') {
+                filteredDealers = dealers.filter(dealer => dealer.state === selectedState);
+            }
+            displayDealers(filteredDealers);
+        }
+
+        function displayReviews(reviewsToShow) {
+            const container = document.getElementById('reviews-container');
+            container.innerHTML = '';
+            reviewsToShow.forEach(review => {
+                const dealer = dealers.find(d => d.id === review.dealer_id);
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                reviewCard.innerHTML = `
+                    <div class="review-text">"${review.review}"</div>
+                    <div class="review-author">
+                        ${review.name} - ${review.car_make} ${review.car_model} ${review.car_year}
+                        <span class="sentiment ${review.sentiment}">
+                            ${review.sentiment === 'positive' ? '😊 Positive' : 
+                              review.sentiment === 'negative' ? '😞 Negative' : '😐 Neutral'}
+                        </span>
+                    </div>
+                    <div style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                        📍 ${dealer ? dealer.full_name : 'Unknown Dealer'}
+                    </div>
+                `;
+                container.appendChild(reviewCard);
+            });
+        }
+
+        function viewDealerReviews(dealerId) {
+            const dealerReviews = reviews.filter(review => review.dealer_id === dealerId);
+            const dealer = dealers.find(d => d.id === dealerId);
+            showSection('reviews');
+            document.querySelector('#reviews-section h2').textContent = `📝 Reviews for ${dealer.full_name}`;
+            displayReviews(dealerReviews);
+        }
+
+        function showDealerDetails(dealerId) {
+            const dealer = dealers.find(d => d.id === dealerId);
+            alert(`🏪 ${dealer.full_name}\n📍 ${dealer.address}\n🏙️ ${dealer.city}, ${dealer.state} ${dealer.zip}\n\n✨ This is a demo version. The full application includes detailed dealer profiles, contact information, and interactive features.`);
+        }
+        JS_EOF
         
-        # Find and modify the main JS file to include demo mode
-        MAIN_JS=$(find ./demo/static/js -name "main.*.js" | head -1)
-        if [ -f "$MAIN_JS" ]; then
-          # Add demo mode detection at the beginning of the main JS file
-          echo "console.log('🚗 Dealership Demo Mode Activated');" > temp_main.js
-          echo "if (window.DEMO_MODE) {" >> temp_main.js
-          echo "  console.log('Using demo data for GitHub Pages');" >> temp_main.js
-          echo "  window.fetch = function(url, options) {" >> temp_main.js
-          echo "    console.log('Demo fetch:', url);" >> temp_main.js
-          echo "    if (url.includes('/get_dealers')) {" >> temp_main.js
-          echo "      return Promise.resolve({" >> temp_main.js
-          echo "        ok: true," >> temp_main.js
-          echo "        json: () => Promise.resolve({status: 200, dealers: window.DEMO_DEALERS})" >> temp_main.js
-          echo "      });" >> temp_main.js
-          echo "    }" >> temp_main.js
-          echo "    if (url.includes('/dealer/') && !url.includes('/reviews/')) {" >> temp_main.js
-          echo "      const id = url.split('/dealer/')[1];" >> temp_main.js
-          echo "      const dealer = window.DEMO_DEALERS.find(d => d.id == id) || window.DEMO_DEALERS[0];" >> temp_main.js
-          echo "      return Promise.resolve({" >> temp_main.js
-          echo "        ok: true," >> temp_main.js
-          echo "        json: () => Promise.resolve({status: 200, dealer: dealer})" >> temp_main.js
-          echo "      });" >> temp_main.js
-          echo "    }" >> temp_main.js
-          echo "    if (url.includes('/reviews/dealer/')) {" >> temp_main.js
-          echo "      return Promise.resolve({" >> temp_main.js
-          echo "        ok: true," >> temp_main.js
-          echo "        json: () => Promise.resolve({status: 200, reviews: window.DEMO_REVIEWS})" >> temp_main.js
-          echo "      });" >> temp_main.js
-          echo "    }" >> temp_main.js
-          echo "    if (url.includes('/get_cars')) {" >> temp_main.js
-          echo "      return Promise.resolve({" >> temp_main.js
-          echo "        ok: true," >> temp_main.js
-          echo "        json: () => Promise.resolve({status: 200, CarModels: [{id: 1, CarMake: 'Toyota', CarModel: 'Camry'}, {id: 2, CarMake: 'Honda', CarModel: 'Civic'}]})" >> temp_main.js
-          echo "      });" >> temp_main.js
-          echo "    }" >> temp_main.js
-          echo "    return Promise.resolve({ok: false, json: () => Promise.resolve({status: 404})});" >> temp_main.js
-          echo "  };" >> temp_main.js
-          echo "}" >> temp_main.js
-          cat "$MAIN_JS" >> temp_main.js
-          mv temp_main.js "$MAIN_JS"
-          echo "✅ React app configured for demo mode"
-        else
-          echo "⚠️ Main JS file not found, demo mode not configured"
-        fi
-        
-        echo "✅ Demo website created successfully"
+        echo "✅ Standalone demo application created successfully"
         
     - name: Upload Demo Site
       uses: actions/upload-artifact@v4
