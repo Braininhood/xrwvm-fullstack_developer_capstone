@@ -200,7 +200,7 @@ def add_review(request):
             dealer = Dealer.objects.get(id=data['dealership'])
             
             # Create the review
-            review = Review.objects.create(
+            Review.objects.create(
                 dealer=dealer,
                 name=data['name'],
                 review=data['review'],

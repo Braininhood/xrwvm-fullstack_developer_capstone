@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -17,10 +16,12 @@ class Dealer(models.Model):
     lat = models.FloatField(blank=True, null=True)
     long = models.FloatField(blank=True, null=True)
     short_name = models.CharField(max_length=100, blank=True, null=True)
-    st = models.CharField(max_length=10, blank=True, null=True)  # State abbreviation
+    # State abbreviation
+    st = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return self.full_name
+
 
 # Review model
 class Review(models.Model):

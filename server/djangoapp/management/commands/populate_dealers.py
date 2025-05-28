@@ -179,11 +179,17 @@ class Command(BaseCommand):
         ]
         
         for review_data in sample_reviews:
-            review = Review.objects.create(**review_data)
-            self.stdout.write(f'Created review by {review.name} for {review.dealer.full_name}')
+            Review.objects.create(**review_data)
+            dealer_name = review_data['dealer'].full_name
+            reviewer_name = review_data['name']
+            self.stdout.write(f'Created review by {reviewer_name} '
+                              f'for {dealer_name}')
         
+        dealer_count = len(created_dealers)
+        review_count = len(sample_reviews)
         self.stdout.write(
             self.style.SUCCESS(
-                f'Successfully populated database with {len(created_dealers)} dealers and {len(sample_reviews)} reviews'
+                f'Successfully populated database with {dealer_count} '
+                f'dealers and {review_count} reviews'
             )
         ) 
