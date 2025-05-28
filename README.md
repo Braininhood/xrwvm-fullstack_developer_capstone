@@ -1,6 +1,9 @@
-# 🚗 Dealership Application - Full Stack Developer Capstone
+# 🚗 Full Stack Dealership Application
 
-A comprehensive full-stack web application for car dealership management with review system, sentiment analysis, and modern UI/UX.
+[![CI/CD Pipeline](https://github.com/Braininhood/xrwvm-fullstack_developer_capstone/actions/workflows/main.yml/badge.svg)](https://github.com/Braininhood/xrwvm-fullstack_developer_capstone/actions/workflows/main.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Available-brightgreen)](https://braininhood.github.io/xrwvm-fullstack_developer_capstone/)
+
+A comprehensive full-stack web application for car dealership management with review system, sentiment analysis, and modern CI/CD pipeline.
 
 ## 🌟 Features
 
@@ -33,24 +36,33 @@ A comprehensive full-stack web application for car dealership management with re
 - Real-time sentiment scoring for reviews
 - Visual sentiment indicators in UI
 
-## 🏗️ Architecture
+## 🌐 Live Demo
+
+**🚀 [View Live Application](https://braininhood.github.io/xrwvm-fullstack_developer_capstone/)**
+
+The application is automatically deployed to GitHub Pages through our CI/CD pipeline. Share this link with anyone to showcase the project!
+
+## ��️ Architecture
 
 ### **Frontend**
-- **React.js** - Modern component-based UI
-- **Bootstrap** - Responsive design framework
+- **React** - Modern SPA with responsive design
+- **Bootstrap** - UI components and styling
 - **React Router** - Client-side routing
-- **Modern ES6+** - Latest JavaScript features
 
 ### **Backend**
-- **Django** - Python web framework
-- **Django REST Framework** - API development
+- **Django** - RESTful API with authentication
+- **Django REST Framework** - API serialization
 - **SQLite** - Development database
-- **Gunicorn** - Production WSGI server
+
+### **Database Layer**
+- **Node.js** - API server for dealership data
+- **MongoDB** - NoSQL database for reviews and dealers
+- **Express.js** - Web framework
 
 ### **Microservices**
-- **Node.js API** - Dealership and review data service
-- **Flask Sentiment Analyzer** - AI-powered sentiment analysis
-- **MongoDB** - NoSQL database for reviews
+- **Flask** - Sentiment analysis service
+- **NLTK** - Natural language processing
+- **Docker** - Containerization
 
 ### **DevOps & Deployment**
 - **Docker** - Containerization
@@ -58,56 +70,72 @@ A comprehensive full-stack web application for car dealership management with re
 - **Kubernetes** - Container orchestration
 - **Nginx** - Reverse proxy (production)
 
-## 🚀 Quick Start
+## 🚀 CI/CD Pipeline
 
-### **Option 1: Docker Deployment (Recommended)**
+Our automated pipeline includes:
 
-```bash
-# Clone the repository
-git clone <repository-url>
-cd xrwvm-fullstack_developer_capstone
+### 1. **Code Quality** 🔍
+- Python linting with `flake8`
+- JavaScript linting with `jshint`
+- Code style enforcement
 
-# Start all services
-cd server
-docker-compose up -d
+### 2. **Testing** 🧪
+- Django backend tests
+- Database migration checks
+- API endpoint validation
 
-# Build and run the main application
-docker build -t dealership-local .
-docker run -p 8000:8000 dealership-local
-```
+### 3. **Build** 📦
+- React frontend compilation
+- Static asset optimization
+- Artifact generation
 
-### **Option 2: Kubernetes Deployment**
+### 4. **Deploy** 🌐
+- Automatic deployment to GitHub Pages
+- Demo website generation
+- Live URL provisioning
 
-```bash
-# Ensure Kubernetes is running (Docker Desktop)
-kubectl cluster-info
+## 🛠️ Local Development
 
-# Deploy the application
-cd server
-kubectl apply -f deployment.yaml
+### Prerequisites
+- Python 3.12+
+- Node.js 18+
+- Docker & Docker Compose
 
-# Set up port forwarding
-kubectl port-forward deployment.apps/dealership 8000:8000
-```
+### Quick Start
 
-### **Option 3: Development Setup**
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Braininhood/xrwvm-fullstack_developer_capstone.git
+   cd xrwvm-fullstack_developer_capstone
+   ```
 
-```bash
-# Backend setup
-cd server
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+2. **Start the database services**
+   ```bash
+   cd server/database
+   docker-compose up -d
+   ```
 
-# Frontend setup (separate terminal)
-cd server/frontend
-npm install
-npm run build
+3. **Start Django backend**
+   ```bash
+   cd server
+   pip install django djangorestframework requests python-dotenv
+   python manage.py migrate
+   python manage.py runserver
+   ```
 
-# Start external services
-cd server/database
-docker-compose up -d
-```
+4. **Start React frontend**
+   ```bash
+   cd server/frontend
+   npm install
+   npm start
+   ```
+
+5. **Start sentiment analysis service**
+   ```bash
+   cd server/djangoapp/microservices
+   docker build -t senti_analyzer .
+   docker run -d -p 5050:5000 senti_analyzer
+   ```
 
 ## 📦 Services & Ports
 
@@ -156,124 +184,63 @@ POST /insert_review                   # Insert review
 POST /analyze/<text>                  # Analyze sentiment
 ```
 
-## 🛠️ Development
+## 🐳 Docker Deployment
 
-### **Project Structure**
-```
-xrwvm-fullstack_developer_capstone/
-├── server/
-│   ├── djangoapp/              # Django application
-│   │   ├── models.py           # Database models
-│   │   ├── views.py            # API views
-│   │   ├── urls.py             # URL routing
-│   │   ├── restapis.py         # External API integration
-│   │   ├── populate.py         # Database population
-│   │   └── microservices/      # Sentiment analysis
-│   ├── frontend/               # React application
-│   │   ├── src/
-│   │   │   ├── components/     # React components
-│   │   │   └── App.js          # Main app component
-│   │   └── build/              # Production build
-│   ├── database/               # Node.js backend
-│   │   ├── app.js              # Express server
-│   │   ├── data/               # JSON data files
-│   │   └── docker-compose.yml  # Multi-container setup
-│   ├── Dockerfile              # Django container
-│   ├── deployment.yaml         # Kubernetes config
-│   └── requirements.txt        # Python dependencies
-└── README.md                   # This file
-```
+The application includes Docker configurations for all services:
 
-### **Adding New Features**
-
-1. **Backend**: Add views in `djangoapp/views.py`
-2. **Frontend**: Create components in `frontend/src/components/`
-3. **Database**: Update models in `djangoapp/models.py`
-4. **API**: Extend `restapis.py` for external integrations
-
-### **Running Tests**
 ```bash
-# Django tests
-python manage.py test
+# Database services
+cd server/database
+docker-compose up -d
 
-# Frontend tests
-cd frontend && npm test
+# Sentiment analysis
+cd server/djangoapp/microservices
+docker build -t senti_analyzer .
+docker run -d -p 5050:5000 senti_analyzer
 ```
 
-## 🐳 Docker Configuration
+## 📈 Monitoring & Analytics
 
-### **Multi-Container Setup**
-- **MongoDB**: Document database for reviews
-- **Node.js**: RESTful API backend
-- **Django**: Main web application
-- **Sentiment Analyzer**: AI microservice
-
-### **Environment Variables**
-```bash
-backend_url=http://host.docker.internal:3030
-sentiment_analyzer_url=http://host.docker.internal:5050/
-```
-
-## ☸️ Kubernetes Deployment
-
-### **Resources Created**
-- **Deployment**: `dealership` (1 replica)
-- **Service**: `dealership-service` (NodePort)
-- **ConfigMap**: Environment variables
-- **Persistent Volume**: Database storage (if needed)
-
-### **Scaling**
-```bash
-kubectl scale deployment dealership --replicas=3
-```
-
-## 🔒 Security Features
-
-- **CSRF Protection**: Django CSRF middleware
-- **Authentication Required**: Protected review posting
-- **Input Validation**: Form and API validation
-- **SQL Injection Prevention**: Django ORM
-- **XSS Protection**: Template escaping
-
-## 🎨 UI/UX Features
-
-- **Responsive Design**: Mobile-first approach
-- **Modern Bootstrap**: Clean, professional interface
-- **Interactive Elements**: Hover effects, smooth transitions
-- **Accessibility**: ARIA labels, keyboard navigation
-- **Loading States**: User feedback during API calls
-
-## 📊 Data Sources
-
-- **Dealerships**: 50 dealers across 21 states
-- **Car Models**: 15 models from 5 manufacturers
-- **Reviews**: User-generated content with sentiment
-- **Sentiment Analysis**: NLTK VADER lexicon
-
-## 🚀 Production Deployment
-
-### **Performance Optimizations**
-- **Static File Serving**: Nginx/CDN
-- **Database Indexing**: Optimized queries
-- **Caching**: Redis/Memcached
-- **Compression**: Gzip/Brotli
-
-### **Monitoring**
-- **Health Checks**: Kubernetes probes
-- **Logging**: Centralized log aggregation
-- **Metrics**: Application performance monitoring
+- **GitHub Actions** - CI/CD pipeline monitoring
+- **Automated testing** - Quality assurance
+- **Deployment tracking** - Release management
+- **Error handling** - Graceful failure recovery
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests for new features
+4. Run tests locally
 5. Submit a pull request
+
+The CI/CD pipeline will automatically:
+- Run code quality checks
+- Execute tests
+- Build the application
+- Deploy to staging (on PR)
+- Deploy to production (on merge to main)
 
 ## 📝 License
 
-This project is part of a Full Stack Developer Capstone course.
+This project is part of the IBM Full Stack Developer Capstone course.
+
+## 🎯 Project Highlights
+
+- **Full Stack Development** - Complete end-to-end application
+- **Microservices Architecture** - Scalable and maintainable
+- **CI/CD Pipeline** - Automated testing and deployment
+- **Cloud Deployment** - GitHub Pages hosting
+- **Modern UI/UX** - Responsive and accessible design
+- **AI Integration** - Sentiment analysis capabilities
+- **Containerization** - Docker-based deployment
+- **API Design** - RESTful services
+
+---
+
+**🌟 Star this repository if you found it helpful!**
+
+**🔗 [Live Demo](https://braininhood.github.io/xrwvm-fullstack_developer_capstone/) | [GitHub Repository](https://github.com/Braininhood/xrwvm-fullstack_developer_capstone)**
 
 ## 🆘 Troubleshooting
 
