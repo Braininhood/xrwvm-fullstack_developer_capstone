@@ -1,0 +1,53 @@
+services:
+  # Django Backend
+  - type: web
+    name: dealership-backend
+    env: docker
+    dockerfilePath: ./server/Dockerfile.prod
+    healthCheckPath: /djangoapp/get_dealers/
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: djangoproj.settings
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dealership-db
+          property: connectionString
+
+  # Node.js API
+  - type: web
+    name: dealership-nodejs-api
+    env: docker
+    dockerfilePath: ./server/database/Dockerfile.prod
+    healthCheckPath: /dealerships
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: dealership-mongo
+          property: connectionString
+
+  # React Frontend
+  - type: web
+    name: dealership-frontend
+    env: docker
+    dockerfilePath: ./server/frontend/Dockerfile.prod
+    healthCheckPath: /health
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: dealership-backend
+          property: host
+
+databases:
+  # PostgreSQL for Django
+  - name: dealership-db
+    databaseName: dealership
+    user: dealership_user
+
+  # MongoDB (external service)
+  - name: dealership-mongo
+    plan: starter 

@@ -1,0 +1,13 @@
+[build]
+  builder = "dockerfile"
+  dockerfilePath = "server/Dockerfile.prod"
+
+[deploy]
+  healthcheckPath = "/djangoapp/get_dealers/"
+  healthcheckTimeout = 300
+  restartPolicyType = "on-failure"
+  restartPolicyMaxRetries = 10
+
+[env]
+  DJANGO_SETTINGS_MODULE = "djangoproj.settings"
+  PYTHONUNBUFFERED = "1" 
