@@ -10,19 +10,20 @@ import django
 sys.path.append('server')
 
 # Set Django settings
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoproj.production_settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                      'djangoproj.production_settings')
 
 # Setup Django
 django.setup()
 
-from djangoapp.models import CarMake, CarModel
+from server.djangoapp.models import CarMake, CarModel  # noqa: E402
 
 
 def populate_database():
     """Populate the database with sample car data"""
     print("🚗 POPULATING RENDER DATABASE")
     print("=" * 40)
-    
+
     # Sample car makes and models
     car_data = [
         {
@@ -46,23 +47,23 @@ def populate_database():
             'models': ['C-Class', 'E-Class', 'GLC', 'GLE', 'A-Class']
         }
     ]
-    
+
     created_makes = 0
     created_models = 0
-    
+
     for make_data in car_data:
         # Create or get car make
         car_make, created = CarMake.objects.get_or_create(
             name=make_data['make'],
             defaults={'description': f'{make_data["make"]} vehicles'}
         )
-        
+
         if created:
             created_makes += 1
             print(f"✅ Created car make: {car_make.name}")
         else:
             print(f"📋 Car make exists: {car_make.name}")
-        
+
         # Create car models
         for model_name in make_data['models']:
             car_model, created = CarModel.objects.get_or_create(
@@ -74,12 +75,12 @@ def populate_database():
                     'dealer_id': 1    # Default dealer
                 }
             )
-            
+
             if created:
                 created_models += 1
                 print(f"  ✅ Created model: {model_name}")
-    
-    print(f"\n🎯 SUMMARY")
+
+    print("\n🎯 SUMMARY")
     print(f"Created {created_makes} new car makes")
     print(f"Created {created_models} new car models")
     print(f"Total makes: {CarMake.objects.count()}")
@@ -87,4 +88,4 @@ def populate_database():
 
 
 if __name__ == "__main__":
-    populate_database() 
+    populate_database()

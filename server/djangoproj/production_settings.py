@@ -14,7 +14,7 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'xrwvm-fullstack-developer-capstone-4q3s.onrender.com',  # New deployment
+    'xrwvm-fullstack-developer-capstone-4q3s.onrender.com',
 ]
 
 # Add Render hostname if available
@@ -31,7 +31,7 @@ ALLOWED_HOSTS.extend([
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com",  # New deployment
+    "https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com",
 ]
 
 # Add Render domain to CORS if available
@@ -44,7 +44,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com',  # New deployment
+    'https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com',
 ]
 
 # Add Render domain to CSRF if available
@@ -98,7 +98,7 @@ TEMPLATES = [
 # Static files directories for production
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build/static'),  # React static files
-    os.path.join(BASE_DIR, 'frontend/build'),  # React build root (for favicon, etc.)
+    os.path.join(BASE_DIR, 'frontend/build'),  # React build root
 ]
 
 # Logging configuration
