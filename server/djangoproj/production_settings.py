@@ -2,7 +2,7 @@
 Production settings for Django deployment
 """
 import os
-from .settings import *
+from .settings import *  # noqa: F403, F401
 
 # Security settings for production
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
@@ -12,7 +12,7 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 
 # Dynamic ALLOWED_HOSTS based on environment
 ALLOWED_HOSTS = [
-    'localhost', 
+    'localhost',
     '127.0.0.1',
 ]
 
@@ -38,9 +38,9 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000', 
+    'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'http://localhost:8000', 
+    'http://localhost:8000',
     'http://127.0.0.1:8000',
 ]
 
@@ -63,6 +63,9 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
 # Static files configuration for production
+# Import BASE_DIR from settings to avoid F405 error
+from pathlib import Path  # noqa: E402
+BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Logging configuration
@@ -85,4 +88,4 @@ LOGGING = {
             'propagate': False,
         },
     },
-} 
+}
