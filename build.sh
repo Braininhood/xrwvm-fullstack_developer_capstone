@@ -31,4 +31,8 @@ python manage.py migrate --settings=djangoproj.production_settings
 echo "🚗 Populating database with sample data..."
 python manage.py populate_db --settings=djangoproj.production_settings
 
+# Populate dealers and reviews
+echo "🏪 Populating dealers and reviews..."
+python manage.py populate_dealers --settings=djangoproj.production_settings
+
 echo "✅ Build completed successfully!" 

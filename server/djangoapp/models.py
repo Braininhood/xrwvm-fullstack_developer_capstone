@@ -2,9 +2,41 @@
 
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 
 # Create your models here.
+
+# Dealer model
+class Dealer(models.Model):
+    full_name = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=50)
+    address = models.TextField()
+    zip_code = models.CharField(max_length=10)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
+    short_name = models.CharField(max_length=100, blank=True, null=True)
+    st = models.CharField(max_length=10, blank=True, null=True)  # State abbreviation
+
+    def __str__(self):
+        return self.full_name
+
+# Review model
+class Review(models.Model):
+    dealer = models.ForeignKey(Dealer, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    purchase = models.BooleanField(default=True)
+    review = models.TextField()
+    purchase_date = models.DateField()
+    car_make = models.CharField(max_length=100)
+    car_model = models.CharField(max_length=100)
+    car_year = models.IntegerField()
+    sentiment = models.CharField(max_length=20, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review by {self.name} for {self.dealer.full_name}"
 
 
 # Car Make model
