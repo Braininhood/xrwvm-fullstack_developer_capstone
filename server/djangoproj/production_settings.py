@@ -74,6 +74,7 @@ X_FRAME_OPTIONS = 'DENY'
 from pathlib import Path  # noqa: E402
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
 # Template configuration for production
 TEMPLATES = [
@@ -97,6 +98,7 @@ TEMPLATES = [
 # Static files directories for production
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build/static'),  # React static files
+    os.path.join(BASE_DIR, 'frontend/build'),  # React build root (for favicon, etc.)
 ]
 
 # Logging configuration
