@@ -312,51 +312,45 @@ jobs:
         <!DOCTYPE html>
         <html lang="en">
         <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width,initial-scale=1" />
-            <meta name="theme-color" content="#000000" />
-            <meta name="description" content="Full Stack Dealership Application Demo" />
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
             <title>🚗 Dealership Application Demo</title>
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
-                body { 
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background: #f8f9fa; color: #333; line-height: 1.6;
-                }
-                .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; }
+                body { font-family: Arial, sans-serif; background: #f5f5f5; }
+                .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
                 .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-                .nav { background: white; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-                .nav-links { display: flex; gap: 20px; justify-content: center; }
-                .nav-link { padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s; }
-                .nav-link:hover { background: #5a6fd8; }
-                .nav-link.active { background: #28a745; }
-                .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-                .dealers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
-                .dealer-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
-                .dealer-card:hover { transform: translateY(-5px); }
-                .dealer-name { font-size: 1.3rem; font-weight: bold; color: #667eea; margin-bottom: 10px; }
-                .dealer-info { color: #666; margin-bottom: 5px; }
+                .nav { background: white; padding: 15px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                .nav button { padding: 12px 24px; margin: 0 10px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+                .nav button:hover { background: #5a6fd8; }
+                .nav button.active { background: #28a745; }
+                .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+                .section { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+                .hidden { display: none; }
+                .dealers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-top: 20px; }
+                .dealer-card { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea; }
+                .dealer-name { font-size: 1.4rem; font-weight: bold; color: #667eea; margin-bottom: 10px; }
+                .dealer-info { margin: 8px 0; color: #666; }
                 .dealer-actions { margin-top: 15px; }
-                .btn { padding: 8px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px; transition: background 0.3s; }
+                .btn { padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; text-decoration: none; display: inline-block; }
                 .btn:hover { background: #218838; }
                 .btn-secondary { background: #6c757d; }
                 .btn-secondary:hover { background: #5a6268; }
-                .filter-section { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-                .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px; }
-                .reviews-section { background: white; padding: 20px; border-radius: 10px; margin-top: 20px; }
-                .review-card { border-left: 4px solid #667eea; padding: 15px; margin-bottom: 15px; background: #f8f9fa; }
-                .review-text { font-style: italic; margin-bottom: 10px; }
+                .filter-section { background: #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+                .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px; font-size: 16px; }
+                .review-card { background: #f8f9fa; padding: 20px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid #667eea; }
+                .review-text { font-style: italic; margin-bottom: 10px; font-size: 1.1rem; }
                 .review-author { font-weight: bold; color: #667eea; }
-                .sentiment { padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px; }
+                .sentiment { padding: 4px 12px; border-radius: 15px; font-size: 0.9rem; margin-left: 10px; }
                 .sentiment.positive { background: #d4edda; color: #155724; }
                 .sentiment.negative { background: #f8d7da; color: #721c24; }
                 .sentiment.neutral { background: #d1ecf1; color: #0c5460; }
-                .hidden { display: none; }
-                .page-section { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                .tech-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0; }
+                .tech-item { background: #667eea; color: white; padding: 15px; border-radius: 8px; text-align: center; }
                 @media (max-width: 768px) {
-                    .nav-links { flex-direction: column; align-items: center; }
                     .dealers-grid { grid-template-columns: 1fr; }
                     .header h1 { font-size: 2rem; }
+                    .nav button { margin: 5px; padding: 10px 16px; }
                 }
             </style>
         </head>
@@ -367,51 +361,142 @@ jobs:
             </div>
             
             <div class="nav">
-                <div class="nav-links">
-                    <a href="#" class="nav-link active" onclick="showSection('dealers')">🏪 Browse Dealers</a>
-                    <a href="#" class="nav-link" onclick="showSection('reviews')">📝 Reviews</a>
-                    <a href="#" class="nav-link" onclick="showSection('about')">ℹ️ About</a>
-                    <a href="../" class="nav-link">🏠 Home</a>
-                </div>
+                <button onclick="showSection('dealers')" class="active" id="dealers-btn">🏪 Browse Dealers</button>
+                <button onclick="showSection('reviews')" id="reviews-btn">📝 Reviews</button>
+                <button onclick="showSection('about')" id="about-btn">ℹ️ About</button>
+                <button onclick="window.location.href='../'" id="home-btn">🏠 Home</button>
             </div>
 
             <div class="container">
-                <div id="dealers-section" class="page-section">
+                <div id="dealers-section" class="section">
                     <h2>🏪 Browse Dealerships</h2>
                     <div class="filter-section">
-                        <label for="state-filter">Filter by State:</label>
+                        <label for="state-filter"><strong>Filter by State:</strong></label>
                         <select id="state-filter" class="filter-select" onchange="filterDealers()">
                             <option value="all">All States</option>
                             <option value="Texas">Texas</option>
                             <option value="New York">New York</option>
                             <option value="California">California</option>
                         </select>
-                        <span id="dealer-count">5 dealerships found</span>
+                        <span id="dealer-count" style="font-weight: bold; color: #667eea;">5 dealerships found</span>
                     </div>
-                    <div id="dealers-grid" class="dealers-grid"></div>
+                    <div id="dealers-grid" class="dealers-grid">
+                        <div class="dealer-card">
+                            <div class="dealer-name">Luxury Motors Dallas</div>
+                            <div class="dealer-info">📍 Dallas, Texas</div>
+                            <div class="dealer-info">🏠 123 Main St</div>
+                            <div class="dealer-info">📮 75201</div>
+                            <div class="dealer-actions">
+                                <button class="btn" onclick="viewDealerReviews(1, 'Luxury Motors Dallas')">📝 View Reviews</button>
+                                <button class="btn btn-secondary" onclick="showDealerDetails('Luxury Motors Dallas', '123 Main St', 'Dallas, Texas 75201')">ℹ️ Details</button>
+                            </div>
+                        </div>
+                        <div class="dealer-card">
+                            <div class="dealer-name">Premium Auto Houston</div>
+                            <div class="dealer-info">📍 Houston, Texas</div>
+                            <div class="dealer-info">🏠 456 Oak Ave</div>
+                            <div class="dealer-info">📮 77001</div>
+                            <div class="dealer-actions">
+                                <button class="btn" onclick="viewDealerReviews(2, 'Premium Auto Houston')">📝 View Reviews</button>
+                                <button class="btn btn-secondary" onclick="showDealerDetails('Premium Auto Houston', '456 Oak Ave', 'Houston, Texas 77001')">ℹ️ Details</button>
+                            </div>
+                        </div>
+                        <div class="dealer-card">
+                            <div class="dealer-name">Elite Cars Austin</div>
+                            <div class="dealer-info">📍 Austin, Texas</div>
+                            <div class="dealer-info">🏠 789 Pine Rd</div>
+                            <div class="dealer-info">📮 73301</div>
+                            <div class="dealer-actions">
+                                <button class="btn" onclick="viewDealerReviews(3, 'Elite Cars Austin')">📝 View Reviews</button>
+                                <button class="btn btn-secondary" onclick="showDealerDetails('Elite Cars Austin', '789 Pine Rd', 'Austin, Texas 73301')">ℹ️ Details</button>
+                            </div>
+                        </div>
+                        <div class="dealer-card">
+                            <div class="dealer-name">Metro Motors NYC</div>
+                            <div class="dealer-info">📍 New York, New York</div>
+                            <div class="dealer-info">🏠 321 Broadway</div>
+                            <div class="dealer-info">📮 10001</div>
+                            <div class="dealer-actions">
+                                <button class="btn" onclick="viewDealerReviews(4, 'Metro Motors NYC')">📝 View Reviews</button>
+                                <button class="btn btn-secondary" onclick="showDealerDetails('Metro Motors NYC', '321 Broadway', 'New York, New York 10001')">ℹ️ Details</button>
+                            </div>
+                        </div>
+                        <div class="dealer-card">
+                            <div class="dealer-name">Golden Gate Auto</div>
+                            <div class="dealer-info">📍 San Francisco, California</div>
+                            <div class="dealer-info">🏠 654 Market St</div>
+                            <div class="dealer-info">📮 94102</div>
+                            <div class="dealer-actions">
+                                <button class="btn" onclick="viewDealerReviews(5, 'Golden Gate Auto')">📝 View Reviews</button>
+                                <button class="btn btn-secondary" onclick="showDealerDetails('Golden Gate Auto', '654 Market St', 'San Francisco, California 94102')">ℹ️ Details</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="reviews-section" class="page-section hidden">
+                <div id="reviews-section" class="section hidden">
                     <h2>📝 Customer Reviews</h2>
-                    <p>Real customer feedback with AI-powered sentiment analysis</p>
-                    <div id="reviews-container" class="reviews-section"></div>
+                    <p style="margin-bottom: 20px;">Real customer feedback with AI-powered sentiment analysis</p>
+                    <div id="reviews-container">
+                        <div class="review-card">
+                            <div class="review-text">"Excellent service and great cars! The staff was very helpful and professional."</div>
+                            <div class="review-author">
+                                John Doe - Toyota Camry 2023
+                                <span class="sentiment positive">😊 Positive</span>
+                            </div>
+                            <div style="margin-top: 10px; color: #666;">📍 Luxury Motors Dallas</div>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-text">"Good experience overall, but could improve on wait times."</div>
+                            <div class="review-author">
+                                Jane Smith - Honda Civic 2022
+                                <span class="sentiment neutral">😐 Neutral</span>
+                            </div>
+                            <div style="margin-top: 10px; color: #666;">📍 Luxury Motors Dallas</div>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-text">"Outstanding dealership! Best car buying experience ever."</div>
+                            <div class="review-author">
+                                Mike Johnson - BMW X5 2023
+                                <span class="sentiment positive">😊 Positive</span>
+                            </div>
+                            <div style="margin-top: 10px; color: #666;">📍 Premium Auto Houston</div>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-text">"Terrible customer service and overpriced vehicles."</div>
+                            <div class="review-author">
+                                Sarah Wilson - Ford F-150 2022
+                                <span class="sentiment negative">😞 Negative</span>
+                            </div>
+                            <div style="margin-top: 10px; color: #666;">📍 Elite Cars Austin</div>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-text">"Professional staff and competitive prices. Highly recommended!"</div>
+                            <div class="review-author">
+                                David Brown - Mercedes C-Class 2023
+                                <span class="sentiment positive">😊 Positive</span>
+                            </div>
+                            <div style="margin-top: 10px; color: #666;">📍 Metro Motors NYC</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="about-section" class="page-section hidden">
+                <div id="about-section" class="section hidden">
                     <h2>ℹ️ About This Demo</h2>
-                    <p><strong>This is a static demo version of the full-stack dealership application.</strong></p>
-                    <br>
-                    <h3>🔧 Technologies Demonstrated:</h3>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li><strong>Frontend:</strong> React, Bootstrap, Responsive Design</li>
-                        <li><strong>Backend:</strong> Django REST API, Node.js</li>
-                        <li><strong>Database:</strong> MongoDB, SQLite</li>
-                        <li><strong>AI/ML:</strong> NLTK Sentiment Analysis</li>
-                        <li><strong>DevOps:</strong> Docker, Kubernetes, CI/CD</li>
-                        <li><strong>Deployment:</strong> GitHub Actions, GitHub Pages</li>
-                    </ul>
-                    <h3>🚀 Full Application Features:</h3>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;"><strong>This is a static demo version of the full-stack dealership application.</strong></p>
+                    
+                    <h3 style="color: #667eea; margin: 20px 0 15px 0;">🔧 Technologies Demonstrated:</h3>
+                    <div class="tech-list">
+                        <div class="tech-item"><strong>Frontend:</strong><br>React, Bootstrap, Responsive Design</div>
+                        <div class="tech-item"><strong>Backend:</strong><br>Django REST API, Node.js</div>
+                        <div class="tech-item"><strong>Database:</strong><br>MongoDB, SQLite</div>
+                        <div class="tech-item"><strong>AI/ML:</strong><br>NLTK Sentiment Analysis</div>
+                        <div class="tech-item"><strong>DevOps:</strong><br>Docker, Kubernetes, CI/CD</div>
+                        <div class="tech-item"><strong>Deployment:</strong><br>GitHub Actions, GitHub Pages</div>
+                    </div>
+
+                    <h3 style="color: #667eea; margin: 20px 0 15px 0;">🚀 Full Application Features:</h3>
+                    <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
                         <li>User authentication and session management</li>
                         <li>50+ real dealerships across multiple states</li>
                         <li>Interactive review posting with sentiment analysis</li>
@@ -420,114 +505,78 @@ jobs:
                         <li>Microservices architecture</li>
                         <li>Automated testing and deployment</li>
                     </ul>
+
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <h4>🔗 Repository:</h4>
+                        <p><a href="https://github.com/Braininhood/xrwvm-fullstack_developer_capstone" target="_blank" style="color: #667eea;">https://github.com/Braininhood/xrwvm-fullstack_developer_capstone</a></p>
+                    </div>
                 </div>
             </div>
 
-            <script src="demo-app.js"></script>
+            <script>
+                console.log('🚗 Dealership Demo Application Loaded Successfully!');
+                
+                function showSection(section) {
+                    // Hide all sections
+                    document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+                    
+                    // Show selected section
+                    document.getElementById(section + '-section').classList.remove('hidden');
+                    // Add active class to clicked button
+                    document.getElementById(section + '-btn').classList.add('active');
+                }
+
+                function filterDealers() {
+                    const selectedState = document.getElementById('state-filter').value;
+                    const dealerCards = document.querySelectorAll('.dealer-card');
+                    let visibleCount = 0;
+                    
+                    dealerCards.forEach(card => {
+                        const dealerInfo = card.querySelector('.dealer-info').textContent;
+                        if (selectedState === 'all' || dealerInfo.includes(selectedState)) {
+                            card.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    document.getElementById('dealer-count').textContent = visibleCount + ' dealerships found';
+                }
+
+                function viewDealerReviews(dealerId, dealerName) {
+                    showSection('reviews');
+                    document.querySelector('#reviews-section h2').textContent = '📝 Reviews for ' + dealerName;
+                    
+                    // Filter reviews for this dealer (simplified for demo)
+                    const allReviews = document.querySelectorAll('.review-card');
+                    allReviews.forEach(review => {
+                        const reviewDealer = review.querySelector('div:last-child').textContent;
+                        if (reviewDealer.includes(dealerName)) {
+                            review.style.display = 'block';
+                        } else {
+                            review.style.display = 'none';
+                        }
+                    });
+                }
+
+                function showDealerDetails(name, address, location) {
+                    alert('🏪 ' + name + '\n📍 ' + address + '\n🏙️ ' + location + '\n\n✨ This is a demo version. The full application includes detailed dealer profiles, contact information, and interactive features.');
+                }
+
+                // Initialize the demo
+                document.addEventListener('DOMContentLoaded', function() {
+                    console.log('📊 Demo loaded with 5 dealers and 5 reviews');
+                });
+            </script>
         </body>
         </html>
         DEMO_EOF
         
         # Create separate JavaScript file to avoid YAML conflicts
-        cat > demo/demo-app.js << 'JS_EOF'
-        const dealers = [
-            {id: 1, full_name: "Luxury Motors Dallas", city: "Dallas", state: "Texas", address: "123 Main St", zip: "75201"},
-            {id: 2, full_name: "Premium Auto Houston", city: "Houston", state: "Texas", address: "456 Oak Ave", zip: "77001"},
-            {id: 3, full_name: "Elite Cars Austin", city: "Austin", state: "Texas", address: "789 Pine Rd", zip: "73301"},
-            {id: 4, full_name: "Metro Motors NYC", city: "New York", state: "New York", address: "321 Broadway", zip: "10001"},
-            {id: 5, full_name: "Golden Gate Auto", city: "San Francisco", state: "California", address: "654 Market St", zip: "94102"}
-        ];
-
-        const reviews = [
-            {id: 1, dealer_id: 1, name: "John Doe", review: "Excellent service and great cars!", sentiment: "positive", car_make: "Toyota", car_model: "Camry", car_year: 2023},
-            {id: 2, dealer_id: 1, name: "Jane Smith", review: "Good experience overall, but could improve on wait times.", sentiment: "neutral", car_make: "Honda", car_model: "Civic", car_year: 2022},
-            {id: 3, dealer_id: 2, name: "Mike Johnson", review: "Outstanding dealership! Best car buying experience ever.", sentiment: "positive", car_make: "BMW", car_model: "X5", car_year: 2023},
-            {id: 4, dealer_id: 3, name: "Sarah Wilson", review: "Terrible customer service and overpriced vehicles.", sentiment: "negative", car_make: "Ford", car_model: "F-150", car_year: 2022},
-            {id: 5, dealer_id: 4, name: "David Brown", review: "Professional staff and competitive prices. Highly recommended!", sentiment: "positive", car_make: "Mercedes", car_model: "C-Class", car_year: 2023}
-        ];
-
-        document.addEventListener('DOMContentLoaded', function() {
-            displayDealers(dealers);
-            displayReviews(reviews);
-            console.log('🚗 Dealership Demo Application Loaded');
-        });
-
-        function showSection(section) {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            document.getElementById(section + '-section').classList.remove('hidden');
-            event.target.classList.add('active');
-        }
-
-        function displayDealers(dealersToShow) {
-            const grid = document.getElementById('dealers-grid');
-            grid.innerHTML = '';
-            dealersToShow.forEach(dealer => {
-                const dealerCard = document.createElement('div');
-                dealerCard.className = 'dealer-card';
-                dealerCard.innerHTML = `
-                    <div class="dealer-name">${dealer.full_name}</div>
-                    <div class="dealer-info">📍 ${dealer.city}, ${dealer.state}</div>
-                    <div class="dealer-info">🏠 ${dealer.address}</div>
-                    <div class="dealer-info">📮 ${dealer.zip}</div>
-                    <div class="dealer-actions">
-                        <a href="#" class="btn" onclick="viewDealerReviews(${dealer.id})">📝 View Reviews</a>
-                        <a href="#" class="btn btn-secondary" onclick="showDealerDetails(${dealer.id})">ℹ️ Details</a>
-                    </div>
-                `;
-                grid.appendChild(dealerCard);
-            });
-            document.getElementById('dealer-count').textContent = `${dealersToShow.length} dealerships found`;
-        }
-
-        function filterDealers() {
-            const selectedState = document.getElementById('state-filter').value;
-            let filteredDealers = dealers;
-            if (selectedState !== 'all') {
-                filteredDealers = dealers.filter(dealer => dealer.state === selectedState);
-            }
-            displayDealers(filteredDealers);
-        }
-
-        function displayReviews(reviewsToShow) {
-            const container = document.getElementById('reviews-container');
-            container.innerHTML = '';
-            reviewsToShow.forEach(review => {
-                const dealer = dealers.find(d => d.id === review.dealer_id);
-                const reviewCard = document.createElement('div');
-                reviewCard.className = 'review-card';
-                reviewCard.innerHTML = `
-                    <div class="review-text">"${review.review}"</div>
-                    <div class="review-author">
-                        ${review.name} - ${review.car_make} ${review.car_model} ${review.car_year}
-                        <span class="sentiment ${review.sentiment}">
-                            ${review.sentiment === 'positive' ? '😊 Positive' : 
-                              review.sentiment === 'negative' ? '😞 Negative' : '😐 Neutral'}
-                        </span>
-                    </div>
-                    <div style="margin-top: 10px; color: #666; font-size: 0.9rem;">
-                        📍 ${dealer ? dealer.full_name : 'Unknown Dealer'}
-                    </div>
-                `;
-                container.appendChild(reviewCard);
-            });
-        }
-
-        function viewDealerReviews(dealerId) {
-            const dealerReviews = reviews.filter(review => review.dealer_id === dealerId);
-            const dealer = dealers.find(d => d.id === dealerId);
-            showSection('reviews');
-            document.querySelector('#reviews-section h2').textContent = `📝 Reviews for ${dealer.full_name}`;
-            displayReviews(dealerReviews);
-        }
-
-        function showDealerDetails(dealerId) {
-            const dealer = dealers.find(d => d.id === dealerId);
-            alert(`🏪 ${dealer.full_name}\n📍 ${dealer.address}\n🏙️ ${dealer.city}, ${dealer.state} ${dealer.zip}\n\n✨ This is a demo version. The full application includes detailed dealer profiles, contact information, and interactive features.`);
-        }
-        JS_EOF
-        
-        echo "✅ Standalone demo application created successfully"
+        echo "✅ Simple inline demo application created successfully"
         
     - name: Upload Demo Site
       uses: actions/upload-artifact@v4
