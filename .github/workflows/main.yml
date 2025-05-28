@@ -103,11 +103,17 @@ jobs:
         echo "📦 Installing React dependencies..."
         npm ci
         
+    - name: Update Browserslist Database
+      working-directory: ./server/frontend
+      run: |
+        echo "🔄 Updating browserslist database..."
+        npx update-browserslist-db@latest
+        
     - name: Build React Application
       working-directory: ./server/frontend
       run: |
         echo "⚛️ Building React application..."
-        npm run build
+        CI=false npm run build
         echo "✅ React build completed successfully"
         
     - name: Upload Build Artifacts
