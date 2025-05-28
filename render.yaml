@@ -1,8 +1,10 @@
 services:
-  # Django Backend (Main Service)
+  # Django Backend with React Frontend
   - type: web
-    name: dealership-backend
-    env: docker
+    name: dealership-fullstack
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "cd server && gunicorn --bind 0.0.0.0:$PORT djangoproj.wsgi:application --settings=djangoproj.production_settings"
     healthCheckPath: /djangoapp/get_dealers/
     envVars:
       - key: DJANGO_SETTINGS_MODULE
