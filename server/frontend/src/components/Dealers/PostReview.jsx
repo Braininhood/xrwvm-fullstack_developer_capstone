@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import "./Dealers.css";
 import "../assets/style.css";
@@ -62,7 +62,7 @@ const PostReview = () => {
   }
 
   }
-  const get_dealer = async ()=>{
+  const get_dealer = useCallback(async ()=>{
     const res = await fetch(dealer_url, {
       method: "GET"
     });
@@ -72,9 +72,9 @@ const PostReview = () => {
       // Our API returns a single dealer object, not an array
       setDealer(retobj.dealer)
     }
-  }
+  }, [dealer_url]);
 
-  const get_cars = async ()=>{
+  const get_cars = useCallback(async ()=>{
     const res = await fetch(carmodels_url, {
       method: "GET"
     });
@@ -82,11 +82,12 @@ const PostReview = () => {
     
     let carmodelsarr = Array.from(retobj.CarModels)
     setCarmodels(carmodelsarr)
-  }
+  }, [carmodels_url]);
+
   useEffect(() => {
     get_dealer();
     get_cars();
-  },[]);
+  },[get_dealer, get_cars]);
 
 
   return (
