@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { buildApiUrl } from '../../config';
 import "./Dealers.css";
 import "../assets/style.css";
 import Header from '../Header/Header';
@@ -9,14 +10,13 @@ const Dealers = () => {
   // let [state, setState] = useState("")
   let [states, setStates] = useState([])
 
-  // let root_url = window.location.origin
-  let dealer_url ="/djangoapp/get_dealers";
-  
-  let dealer_url_by_state = "/djangoapp/get_dealers/";
+  // Use config for API URLs
+  let dealer_url = buildApiUrl("/djangoapp/get_dealers");
+  let dealer_url_by_state = buildApiUrl("/djangoapp/get_dealers/");
  
   const filterDealers = async (state) => {
-    dealer_url_by_state = dealer_url_by_state+state;
-    const res = await fetch(dealer_url_by_state, {
+    const filter_url = dealer_url_by_state + state;
+    const res = await fetch(filter_url, {
       method: "GET"
     });
     const retobj = await res.json();

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { buildApiUrl } from '../../config';
 import "./Register.css";
 import user_icon from "../assets/person.png"
 import email_icon from "../assets/email.png"
@@ -34,7 +35,7 @@ const Register = () => {
     }
     
     try {
-      let register_url = window.location.origin+"/djangoapp/register";
+      let register_url = buildApiUrl("/djangoapp/register");
 
       // Send POST request to register endpoint
       const res = await fetch(register_url, {
