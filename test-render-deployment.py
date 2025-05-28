@@ -4,7 +4,7 @@ Test script to verify Render deployment is working correctly
 """
 import requests
 
-RENDER_URL = "https://xrwvm-fullstack-developer-capstone-fw81.onrender.com"
+RENDER_URL = "https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com"
 
 
 def test_render_deployment():

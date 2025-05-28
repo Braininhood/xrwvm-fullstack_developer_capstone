@@ -14,6 +14,7 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'xrwvm-fullstack-developer-capstone-4q3s.onrender.com',  # New deployment
 ]
 
 # Add Render hostname if available
@@ -30,6 +31,7 @@ ALLOWED_HOSTS.extend([
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com",  # New deployment
 ]
 
 # Add Render domain to CORS if available
@@ -42,6 +44,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com',  # New deployment
 ]
 
 # Add Render domain to CSRF if available
