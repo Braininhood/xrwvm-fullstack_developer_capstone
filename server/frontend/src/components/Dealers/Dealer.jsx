@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { buildApiUrl } from '../../config';
 import "./Dealers.css";
 import "../assets/style.css";
-import Header from '../Header/Header';
 import review_icon from "../assets/reviewicon.png"
 
 const Dealer = () => {
@@ -62,7 +61,6 @@ const Dealer = () => {
 
 return(
   <div style={{margin:"20px"}}>
-    <Header/>
     <div style={{marginTop:"10px"}}>
       <h1 style={{color:"grey"}}>{dealer.full_name}{postReview}</h1>
       <h4 style={{color:"grey"}}>{dealer.city},{dealer.address}, Zip - {dealer.zip}, {dealer.state}</h4>
@@ -75,13 +73,16 @@ return(
       {unreviewed ? (
         <div>No reviews yet! </div>
       ):(
-        <div>
+        <div className="reviews_container">
         {reviews.map(review => (
-          <div className='review_panel'>
+          <div className='review_panel' key={review.id}>
             <img src={review_icon} className="review_icon" alt='Review'/>
             <div className='review'>
-              <div>
-                {review.name} {senti_icon(review.sentiment)}
+              <div className="review_header">
+                <span className="reviewer_name">{review.name}</span>
+                <span className={`sentiment_badge ${review.sentiment}`}>
+                  {senti_icon(review.sentiment)} {review.sentiment}
+                </span>
               </div>
               <div className="reviewText">
                 {review.review}

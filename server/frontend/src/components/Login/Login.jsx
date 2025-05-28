@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { buildApiUrl } from '../../config';
 
 import "./Login.css";
-import Header from '../Header/Header';
 
 const Login = ({ onClose }) => {
 
@@ -42,8 +41,6 @@ const Login = ({ onClose }) => {
   
 
   return (
-    <div>
-      <Header/>
     <div onClick={onClose}>
       <div
         onClick={(e) => {
@@ -67,7 +64,6 @@ const Login = ({ onClose }) => {
               <a className="loginlink" href="/register">Register Now</a>
           </form>
       </div>
-    </div>
     </div>
   );
 };

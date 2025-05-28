@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { buildApiUrl } from '../../config';
 import "./Dealers.css";
 import "../assets/style.css";
-import Header from '../Header/Header';
 import review_icon from "../assets/reviewicon.png"
 
 const Dealers = () => {
@@ -51,8 +50,6 @@ const Dealers = () => {
 let isLoggedIn = sessionStorage.getItem("username") != null ? true : false;
 return(
   <div>
-      <Header/>
-
      <table className='table'>
       <tr>
       <th>ID</th>

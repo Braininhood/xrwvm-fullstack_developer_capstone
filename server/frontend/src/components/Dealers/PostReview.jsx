@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { buildApiUrl } from '../../config';
 import "./Dealers.css";
 import "../assets/style.css";
-import Header from '../Header/Header';
 
 
 const PostReview = () => {
@@ -92,9 +91,7 @@ const PostReview = () => {
 
 
   return (
-    <div>
-      <Header/>
-      <div  style={{margin:"5%"}}>
+    <div  style={{margin:"5%"}}>
       <h1 style={{color:"darkblue"}}>{dealer.full_name}</h1>
       <textarea id='review' cols='50' rows='7' onChange={(e) => setReview(e.target.value)} placeholder="Write your review here..."></textarea>
       <div className='input_field'>
@@ -117,7 +114,6 @@ const PostReview = () => {
       <div>
       <button className='postreview' onClick={postreview}>Post Review</button>
       </div>
-    </div>
     </div>
   )
 }
