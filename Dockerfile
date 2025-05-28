@@ -9,6 +9,9 @@ RUN npm ci --only=production && npm cache clean --force
 COPY server/frontend/ ./
 RUN npm run build
 
+# Verify build was successful
+RUN ls -la /frontend/build/
+
 # Stage 2: Django Backend with Frontend
 FROM python:3.12-slim
 
@@ -34,12 +37,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy Django project
 COPY server/ .
 
-# Copy built React frontend from previous stage
-COPY --from=frontend-builder /frontend/build ./frontend/build/
-COPY --from=frontend-builder /frontend/build/static ./frontend/static/
-
-# Create necessary directories
+# Create frontend directories before copying
 RUN mkdir -p frontend/build frontend/static
+
+# Copy built React frontend from previous stage
+COPY --from=frontend-builder /frontend/build/ ./frontend/build/
+
+# Verify files were copied
+RUN ls -la ./frontend/build/
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
