@@ -16,5 +16,4 @@ code {
 .form-check-input {
   -webkit-print-color-adjust: exact !important;
   print-color-adjust: exact !important;
-  color-adjust: unset !important;
 } 
