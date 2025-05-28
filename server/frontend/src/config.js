@@ -1,8 +1,7 @@
 // Configuration for API endpoints
 const config = {
-  // Django backend URL - use same domain in production, localhost in development
-  DJANGO_API_URL: process.env.REACT_APP_DJANGO_API_URL || 
-    (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000'),
+  // Django backend URL
+  DJANGO_API_URL: process.env.REACT_APP_DJANGO_API_URL || 'http://localhost:8000',
   
   // API endpoints
   endpoints: {
