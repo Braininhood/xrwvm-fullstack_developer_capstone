@@ -28,16 +28,27 @@ SECRET_KEY =\
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# Production and development hosts
+ALLOWED_HOSTS = [
+    'localhost', 
+    '127.0.0.1',
+    'xrwvm-fullstack-developer-capstone-fw81.onrender.com',
+    '*.onrender.com',  # Allow all Render subdomains
+    '.onrender.com',   # Alternative syntax for subdomains
+]
+
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000', 'http://127.0.0.1:3000',
-    'http://localhost:8000', 'http://127.0.0.1:8000'
+    'http://localhost:8000', 'http://127.0.0.1:8000',
+    'https://xrwvm-fullstack-developer-capstone-fw81.onrender.com',
+    'https://*.onrender.com',
 ]
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://xrwvm-fullstack-developer-capstone-fw81.onrender.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
