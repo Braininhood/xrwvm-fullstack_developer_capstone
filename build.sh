@@ -23,9 +23,28 @@ cd ..
 echo "📁 Collecting static files..."
 python manage.py collectstatic --noinput --settings=djangoproj.production_settings
 
-# Run migrations
+# Run migrations with verbose output
 echo "🗄️ Running database migrations..."
-python manage.py migrate --settings=djangoproj.production_settings
+echo "📋 Checking migration status..."
+python manage.py showmigrations --settings=djangoproj.production_settings
+
+echo "🔄 Applying migrations..."
+python manage.py migrate --verbosity=2 --settings=djangoproj.production_settings
+
+# Check database setup
+echo "🔍 Verifying database setup..."
+python manage.py check_db --settings=djangoproj.production_settings
+
+# Create superuser if it doesn't exist
+echo "👤 Creating superuser..."
+python manage.py shell --settings=djangoproj.production_settings <<EOF
+from django.contrib.auth.models import User
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
+    print('Superuser created')
+else:
+    print('Superuser already exists')
+EOF
 
 # Populate database with sample data
 echo "🚗 Populating database with sample data..."
@@ -34,5 +53,9 @@ python manage.py populate_db --settings=djangoproj.production_settings
 # Populate dealers and reviews
 echo "🏪 Populating dealers and reviews..."
 python manage.py populate_dealers --settings=djangoproj.production_settings
+
+# Final database check
+echo "🔍 Final database verification..."
+python manage.py check_db --settings=djangoproj.production_settings
 
 echo "✅ Build completed successfully!" 
