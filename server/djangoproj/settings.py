@@ -164,11 +164,22 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/static'),
-    os.path.join(BASE_DIR, 'frontend/build'),
-    os.path.join(BASE_DIR, 'frontend/build/static'),
-]
+# Static files directories - only include directories that exist
+STATICFILES_DIRS = []
+
+# Check if frontend directories exist before adding them
+frontend_static = os.path.join(BASE_DIR, 'frontend/static')
+frontend_build = os.path.join(BASE_DIR, 'frontend/build')
+frontend_build_static = os.path.join(BASE_DIR, 'frontend/build/static')
+
+if os.path.exists(frontend_static):
+    STATICFILES_DIRS.append(frontend_static)
+
+if os.path.exists(frontend_build):
+    STATICFILES_DIRS.append(frontend_build)
+
+if os.path.exists(frontend_build_static):
+    STATICFILES_DIRS.append(frontend_build_static)
 
 # Session configuration
 SESSION_COOKIE_AGE = 86400  # 24 hours

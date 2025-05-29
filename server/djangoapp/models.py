@@ -6,6 +6,34 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
+# Dealer model for storing dealer information
+class Dealer(models.Model):
+    full_name = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    address = models.CharField(max_length=300)
+    zip = models.CharField(max_length=10)
+    short_name = models.CharField(max_length=100, blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.full_name} - {self.city}, {self.state}"
+
+
+# Review model for storing dealer reviews
+class Review(models.Model):
+    dealer = models.ForeignKey(Dealer, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    purchase = models.BooleanField(default=False)
+    review = models.TextField()
+    purchase_date = models.DateField(blank=True, null=True)
+    car_make = models.CharField(max_length=100, blank=True, null=True)
+    car_model = models.CharField(max_length=100, blank=True, null=True)
+    car_year = models.IntegerField(blank=True, null=True)
+    sentiment = models.CharField(max_length=20, default='neutral')
+    
+    def __str__(self):
+        return f"Review by {self.name} for {self.dealer.full_name}"
+
 
 # Car Make model
 class CarMake(models.Model):
