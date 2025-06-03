@@ -35,9 +35,9 @@ services:
       - key: PORT
         value: "3030"
       - key: MONGODB_URL
-        # You'll need to set this in Render dashboard to your MongoDB Atlas connection string
-        # Format: mongodb+srv://username:password@cluster.mongodb.net/dealershipsDB
-        value: mongodb+srv://dealership:password@cluster.mongodb.net/dealershipsDB
+        # Replace with your real MongoDB Atlas connection string
+        # Format: mongodb+srv://dealership:YOUR_REAL_PASSWORD@dealership-cluster.xxxxx.mongodb.net/dealershipsDB
+        value: REPLACE_WITH_YOUR_MONGODB_ATLAS_CONNECTION_STRING
 
   # Sentiment Analysis Microservice
   - type: web
