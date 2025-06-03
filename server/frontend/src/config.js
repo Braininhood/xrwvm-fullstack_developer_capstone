@@ -1,7 +1,7 @@
 // Configuration for API endpoints
 const config = {
-  // Django backend URL
-  DJANGO_API_URL: process.env.REACT_APP_DJANGO_API_URL || 'http://localhost:8000',
+  // Django backend URL - Using nginx proxy for local development
+  DJANGO_API_URL: process.env.REACT_APP_DJANGO_API_URL || 'http://localhost',
   
   // API endpoints
   endpoints: {
