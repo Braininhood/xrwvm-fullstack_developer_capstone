@@ -2,6 +2,105 @@
 
 This guide covers multiple deployment options for your full-stack application, from free hosting to production-ready solutions.
 
+## 🔧 **URGENT: Fix Current Render Deployment**
+
+Your current deployment at https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com is missing the microservices. Here's how to fix it:
+
+### **Step 1: Set Up MongoDB Atlas (Free)**
+
+1. **Create MongoDB Atlas Account**
+   - Go to [mongodb.com/atlas](https://mongodb.com/atlas)
+   - Create a free cluster
+
+2. **Configure Database**
+   - **Cluster Name**: dealership-cluster
+   - **Database Name**: dealershipsDB
+   - **Username**: dealership
+   - **Password**: (choose a secure password)
+
+3. **Get Connection String**
+   ```
+   mongodb+srv://dealership:YOUR_PASSWORD@cluster.mongodb.net/dealershipsDB
+   ```
+
+4. **Import Data**
+   ```bash
+   # Install MongoDB Tools
+   # Import dealers
+   mongoimport --uri "your-connection-string" --collection dealerships --file server/database/data/dealerships.json --jsonArray
+   
+   # Import reviews  
+   mongoimport --uri "your-connection-string" --collection reviews --file server/database/data/reviews.json --jsonArray
+   ```
+
+### **Step 2: Deploy Multiple Services on Render**
+
+**Option A: Update Current Deployment (Recommended)**
+
+1. **Push Updated Code**
+   ```bash
+   git add .
+   git commit -m "Fix microservices deployment configuration"
+   git push origin main
+   ```
+
+2. **Create Additional Services in Render Dashboard**
+
+   **Node.js API Service:**
+   - Name: `dealership-nodejs`
+   - Environment: `Node`
+   - Build Command: `cd server/database && npm install`
+   - Start Command: `cd server/database && npm start`
+   - Environment Variables:
+     ```
+     NODE_ENV=production
+     PORT=3030
+     MONGODB_URL=mongodb+srv://dealership:YOUR_PASSWORD@cluster.mongodb.net/dealershipsDB
+     ```
+
+   **Sentiment Analysis Service:**
+   - Name: `dealership-sentiment`
+   - Environment: `Python`
+   - Build Command: `cd server/djangoapp/microservices && pip install -r requirements.txt`
+   - Start Command: `cd server/djangoapp/microservices && python app.py`
+   - Environment Variables:
+     ```
+     PORT=5000
+     FLASK_ENV=production
+     ```
+
+3. **Update Django Service Environment Variables**
+   ```
+   backend_url=https://dealership-nodejs.onrender.com
+   sentiment_analyzer_url=https://dealership-sentiment.onrender.com
+   ```
+
+**Option B: Use render.yaml (Automated)**
+
+1. **Use the updated render.yaml file** (already created above)
+2. **Connect to GitHub** and let Render auto-deploy all services
+3. **Set MongoDB Atlas connection** in the MONGODB_URL environment variable
+
+### **Step 3: Verify Deployment**
+
+Once all services are deployed, test these endpoints:
+
+```bash
+# Django API
+curl https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com/djangoapp/get_dealers/
+
+# Node.js API  
+curl https://dealership-nodejs.onrender.com/fetchDealers
+
+# Sentiment Analysis
+curl https://dealership-sentiment.onrender.com/analyze/great%20service
+
+# Frontend
+https://xrwvm-fullstack-developer-capstone-4q3s.onrender.com/
+```
+
+---
+
 ## 🎯 **Quick Deployment Options**
 
 ### **Option 1: Free Hosting (Recommended for Demo)**
