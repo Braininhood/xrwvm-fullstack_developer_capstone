@@ -2,6 +2,7 @@
 import requests
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 
@@ -13,66 +14,23 @@ sentiment_analyzer_url = os.getenv(
 
 
 def get_request(endpoint, **kwargs):
-    params = ""
-    if (kwargs):
-        for key, value in kwargs.items():
-            params = params + key + "=" + value + "&"
-    request_url = backend_url + endpoint + "?" + params
-    print("GET from {} ".format(request_url))
+    request_url = backend_url + endpoint
+    network_exception = False
     try:
         # Call get method of requests library with URL and parameters
-        response = requests.get(request_url, timeout=5)
-        return response.json()
-    except requests.exceptions.ConnectionError:
-        print(f"Connection error: Dealer service not available at {backend_url}")
-        # Return mock data for testing when service is not available
-        if "fetchDealers" in endpoint:
-            return [
-                {
-                    "id": 1,
-                    "full_name": "Sample Dealer 1",
-                    "city": "Sample City",
-                    "state": "Sample State",
-                    "address": "123 Sample St",
-                    "zip": "12345"
-                },
-                {
-                    "id": 2,
-                    "full_name": "Sample Dealer 2", 
-                    "city": "Another City",
-                    "state": "Another State",
-                    "address": "456 Another St",
-                    "zip": "67890"
-                }
-            ]
-        elif "fetchDealer/" in endpoint:
-            return {
-                "id": 1,
-                "full_name": "Sample Dealer",
-                "city": "Sample City",
-                "state": "Sample State",
-                "address": "123 Sample St",
-                "zip": "12345"
-            }
-        elif "fetchReviews" in endpoint:
-            return [
-                {
-                    "id": 1,
-                    "name": "Sample Reviewer",
-                    "review": "Great service!",
-                    "car_make": "Toyota",
-                    "car_model": "Camry",
-                    "car_year": 2023
-                }
-            ]
-        return []
-    except requests.exceptions.Timeout:
-        print(f"Timeout error: Dealer service at {backend_url} is not responding")
-        return []
-    except Exception as e:
-        # If any error occurs
-        print(f"Network exception occurred: {e}")
-        return []
+        response = requests.get(request_url, headers={'Content-Type':
+                                'application/json'}, params=kwargs)
+    except Exception:
+        # If any exception occurs
+        print("Network exception occurred")
+        network_exception = True
+    status_code = 200
+    json_data = {}
+    if network_exception or response.status_code != 200:
+        status_code = 500
+    else:
+        json_data = json.loads(response.text)
+    return {"status_code": status_code, "message": json_data}
 
 
 def analyze_review_sentiments(text):

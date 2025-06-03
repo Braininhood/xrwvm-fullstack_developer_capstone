@@ -8,9 +8,9 @@ app = Flask("Sentiment Analyzer")
 
 # Download required NLTK data
 try:
-    nltk.download('vader_lexicon', quiet=True)
-except:
-    pass
+    nltk.data.find('vader_lexicon')
+except Exception:
+    nltk.download('vader_lexicon')
 
 sia = SentimentIntensityAnalyzer()
 

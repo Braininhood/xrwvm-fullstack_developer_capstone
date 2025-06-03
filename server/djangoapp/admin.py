@@ -34,10 +34,11 @@ class DealerAdmin(admin.ModelAdmin):
 
 # ReviewAdmin class
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ['name', 'dealer', 'car_make', 'car_model', 'sentiment', 'purchase']
+    list_display = ['name', 'dealer', 'car_make', 'car_model', 'sentiment',
+                    'purchase']
     list_filter = ['sentiment', 'purchase', 'dealer', 'car_make']
     search_fields = ['name', 'review', 'dealer__full_name']
-    readonly_fields = ['sentiment']  # Make sentiment read-only as it's auto-generated
+    readonly_fields = ['sentiment']  # Make sentiment read-only
 
 
 # Register models here
